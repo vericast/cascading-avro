@@ -1,0 +1,32 @@
+package com.maxpoint.cascading.avro;
+
+import cascading.tuple.Fields;
+
+public class Test1Fields {
+    private Test1Fields() {}
+
+    public static final String ABOOLEAN = "aBoolean";
+    public static final String ANINT = "anInt";
+    public static final String ALONG = "aLong";
+    public static final String AFLOAT = "aFloat";
+    public static final String ADOUBLE = "aDouble";
+    public static final String ASTRING = "aString";
+    public static final String ABYTES = "aBytes";
+    public static final String AFIXED = "aFixed";
+    /**
+     * I'm always null
+     */
+    public static final String ANULL = "aNull";
+
+    public static final Fields ALL = new Fields(new String[] {
+    ABOOLEAN,
+    ANINT,
+    ALONG,
+    AFLOAT,
+    ADOUBLE,
+    ASTRING,
+    ABYTES,
+    AFIXED,
+    ANULL,
+    });
+}

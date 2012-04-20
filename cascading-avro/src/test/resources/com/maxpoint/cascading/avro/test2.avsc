@@ -1,0 +1,14 @@
+{
+    "type": "record",
+    "name": "test1",
+    "namespace": "com.maxpoint.cascading.avro",
+    "fields": [
+        {"name": "aBoolean", "type": "boolean", "default": true },
+        {"name": "anInt", "type": "int", "default": 123 },
+        {"name": "aLong", "type": "long", "default": 1 },
+        {"name": "aFloat", "type": "float", "default": 0.1 },
+        {"name": "aDouble", "type": "double", "default": 110.1 },
+        {"name": "aString", "type": ["string", "null"], "default": "foobar" },
+        {"name": "aNull", "type": "null" }
+    ]
+}

@@ -1,0 +1,24 @@
+#if ($schema.getNamespace())
+package $schema.getNamespace();
+#end
+
+import cascading.tuple.Fields;
+
+public class ${this.fieldsClassName($schema.getName())} {
+    private ${this.fieldsClassName($schema.getName())}() {}
+
+#foreach ($field in $schema.getFields())
+#if ($field.doc())
+    /**
+     * ${field.doc()}
+     */
+#end
+    public static final String ${field.name().toUpperCase()} = "${field.name()}";
+#end
+
+    public static final Fields ALL = new Fields(new String[] {
+#foreach ($field in $schema.getFields())
+    ${field.name().toUpperCase()},
+#end
+    });
+}
