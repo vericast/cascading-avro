@@ -21,7 +21,7 @@
 
   <groupId>com.maxpoint.hadoop</groupId>
   <artifactId>cascading-avro-maven-plugin</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>maven-plugin</packaging>
 
   <name>Cascading field name generator for Avro</name>
