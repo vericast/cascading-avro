@@ -29,6 +29,12 @@
     Maven plug-in to generate field name constants based on Avro schema.
   </description>
 
+  <scm>
+    <connection>scm:git:git://github.com/MaxPoint/cascading-avro.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:MaxPoint/cascading-avro.git</developerConnection>
+    <url>https://github.com/MaxPoint/cascading-avro</url>
+  </scm>
+
   <build>
     <resources>
       <resource>

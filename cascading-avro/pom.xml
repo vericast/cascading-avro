@@ -27,6 +27,12 @@
     Cascading scheme for reading and writing Avro-serialized data.
   </description>
 
+  <scm>
+    <connection>scm:git:git://github.com/MaxPoint/cascading-avro.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com:MaxPoint/cascading-avro.git</developerConnection>
+    <url>https://github.com/MaxPoint/cascading-avro</url>
+  </scm>
+
   <build>
     <pluginManagement>
       <plugins>
