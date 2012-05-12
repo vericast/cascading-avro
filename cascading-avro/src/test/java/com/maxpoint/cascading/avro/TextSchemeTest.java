@@ -42,8 +42,8 @@ public class TextSchemeTest {
 
     @Test
     public void testRoundTrip() throws Exception {
-        final Schema.Parser parser = new Schema.Parser();
-        final Schema schema = parser.parse(getClass().getResourceAsStream("test2.avsc"));
+//        final Schema.Parser parser = new Schema.Parser();
+        final Schema schema = Schema.parse(getClass().getResourceAsStream("test2.avsc"));
         final TextScheme scheme = new TextScheme(schema);
 
         final Lfs lfs = new Lfs(scheme, tempDir.getRoot().toString());

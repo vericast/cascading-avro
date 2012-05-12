@@ -115,8 +115,8 @@ public abstract class AvroSchemeBase extends Scheme {
     }
     
     static Schema readSchema(ObjectInputStream in) throws IOException {
-        final Schema.Parser parser = new Schema.Parser();
-        return parser.parse(in.readUTF());
+//        final Schema.Parser parser = new Schema.Parser();
+        return Schema.parse(in.readUTF());
     }
 
     final class FieldType implements Serializable {
