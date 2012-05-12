@@ -19,8 +19,11 @@ import cascading.tap.Tap;
 import cascading.tuple.Fields;
 import cascading.tuple.Tuple;
 import cascading.tuple.TupleEntry;
+import cascading.tuple.Tuples;
+
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileConstants;
+import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericFixed;
 import org.apache.avro.generic.IndexedRecord;
 import org.apache.avro.mapred.AvroInputFormat;
@@ -39,6 +42,7 @@ import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * Cascading scheme for reading data serialized using Avro. This scheme sources and sinks tuples with fields named
@@ -55,18 +59,24 @@ import java.util.LinkedHashMap;
  *     <li>long</li>
  *     <li>null</li>
  *     <li>string</li>
+ *     <li>array</li>
+ *     <li>map</li>
  *     <li>union of [type, null], treated as nullable value of the type</li>
  * </ul>
  */
+
+
+
 @SuppressWarnings("deprecation")
 public class AvroScheme extends AvroSchemeBase {
     public static final EnumSet<Schema.Type> ALLOWED_TYPES = EnumSet.of(Schema.Type.BOOLEAN, Schema.Type.BYTES,
             Schema.Type.DOUBLE, Schema.Type.FIXED, Schema.Type.FLOAT, Schema.Type.INT, Schema.Type.LONG,
-            Schema.Type.NULL, Schema.Type.STRING, Schema.Type.UNION);
+            Schema.Type.NULL, Schema.Type.STRING, Schema.Type.UNION, Schema.Type.ARRAY, Schema.Type.MAP);
 
     private Schema dataSchema;
     private FieldType[] fieldTypes;
     private transient IndexedRecord cached;
+    private Object[] buffer;
     
     public AvroScheme(Schema dataSchema) {
         this.dataSchema = dataSchema;
@@ -124,7 +134,6 @@ public class AvroScheme extends AvroSchemeBase {
 
     @Override
     public void sinkInit(Tap tap, JobConf conf) throws IOException {
-        addAvroSerialization(conf);
         conf.set(AvroJob.OUTPUT_SCHEMA, dataSchema.toString());
         conf.setOutputFormat(AvroOutputFormat.class);
         conf.setOutputKeyClass(AvroWrapper.class);
@@ -142,6 +151,7 @@ public class AvroScheme extends AvroSchemeBase {
             serializations.add(AvroSerialization.class.getName());
             conf.setStrings("io.serializations", serializations.toArray(new String[serializations.size()]));
         }
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -152,7 +162,7 @@ public class AvroScheme extends AvroSchemeBase {
         final Fields sinkFields = getSinkFields();
         for(int i = 0; i < fieldTypes.length; i++) {
             final Comparable field = sinkFields.get(i);
-            final Object val = tupleEntry.get(field);
+            final Object val = tupleEntry.getObject(field);
             cached.put(fieldTypes[i].pos, toAvro(field, fieldTypes[i], val));
         }
         output.collect(new AvroWrapper<IndexedRecord>(cached), NullWritable.get());
@@ -182,6 +192,7 @@ public class AvroScheme extends AvroSchemeBase {
                 return ((Number)val).doubleValue();
             case FLOAT:
                 return ((Number)val).floatValue();
+
         }
         return val;
     }
