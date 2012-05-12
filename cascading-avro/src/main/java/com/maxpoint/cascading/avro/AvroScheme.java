@@ -19,7 +19,6 @@ import cascading.tap.Tap;
 import cascading.tuple.Fields;
 import cascading.tuple.Tuple;
 import cascading.tuple.TupleEntry;
-import cascading.tuple.Tuples;
 
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileConstants;
@@ -31,7 +30,6 @@ import org.apache.avro.mapred.AvroJob;
 import org.apache.avro.mapred.AvroOutputFormat;
 import org.apache.avro.mapred.AvroSerialization;
 import org.apache.avro.mapred.AvroWrapper;
-import org.apache.avro.specific.SpecificData;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.mapred.JobConf;
@@ -42,7 +40,6 @@ import java.nio.ByteBuffer;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * Cascading scheme for reading data serialized using Avro. This scheme sources and sinks tuples with fields named
@@ -75,8 +72,6 @@ public class AvroScheme extends AvroSchemeBase {
 
     private Schema dataSchema;
     private FieldType[] fieldTypes;
-    private transient IndexedRecord cached;
-    private Object[] buffer;
     
     public AvroScheme(Schema dataSchema) {
         this.dataSchema = dataSchema;
@@ -157,15 +152,15 @@ public class AvroScheme extends AvroSchemeBase {
     @SuppressWarnings("unchecked")
     @Override
     public void sink(TupleEntry tupleEntry, OutputCollector output) throws IOException {
-        cached = (IndexedRecord)SpecificData.get().newRecord(cached, dataSchema);
+    		GenericData.Record record = new GenericData.Record(dataSchema);
 
         final Fields sinkFields = getSinkFields();
         for(int i = 0; i < fieldTypes.length; i++) {
             final Comparable field = sinkFields.get(i);
             final Object val = tupleEntry.getObject(field);
-            cached.put(fieldTypes[i].pos, toAvro(field, fieldTypes[i], val));
+            record.put(fieldTypes[i].pos, toAvro(field, fieldTypes[i], val));
         }
-        output.collect(new AvroWrapper<IndexedRecord>(cached), NullWritable.get());
+        output.collect(new AvroWrapper<IndexedRecord>(record), NullWritable.get());
     }
     
     private Object toAvro(Comparable field, FieldType typeInfo, Object val) throws IOException {
@@ -181,7 +176,7 @@ public class AvroScheme extends AvroSchemeBase {
             case STRING:
                 return val.toString();
             case FIXED:
-                return SpecificData.get().createFixed(null, ((BytesWritable)val).getBytes(), typeInfo.schema);
+                return new GenericData.Fixed(typeInfo.schema, ((BytesWritable)val).getBytes());
             case BYTES:
                 return ByteBuffer.wrap(((BytesWritable)val).getBytes());
             case LONG:

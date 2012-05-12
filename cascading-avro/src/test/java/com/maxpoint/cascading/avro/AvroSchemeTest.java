@@ -55,8 +55,7 @@ public class AvroSchemeTest {
     
     @Test
     public void testRoundTrip() throws Exception {
-        final Schema.Parser parser = new Schema.Parser();
-        final Schema schema = parser.parse(getClass().getResourceAsStream("test1.avsc"));
+        final Schema schema = Schema.parse(getClass().getResourceAsStream("test1.avsc"));
         final AvroScheme scheme = new AvroScheme(schema);
 
         final Fields fields = new Fields("aBoolean", "anInt", "aLong", "aDouble", "aFloat", "aBytes", "aFixed", "aNull", "aString", "aList", "aMap");
@@ -98,8 +97,7 @@ public class AvroSchemeTest {
     
     @Test
     public void listOrMapInsideListTest() throws Exception {
-        final Schema.Parser parser = new Schema.Parser();
-        final Schema schema = parser.parse(getClass().getResourceAsStream("test4.avsc"));
+        final Schema schema = Schema.parse(getClass().getResourceAsStream("test4.avsc"));
         final AvroScheme scheme = new AvroScheme(schema);
 
         final Fields fields = new Fields("aListOfListOfInt", "aListOfMapToLong");
@@ -141,8 +139,7 @@ public class AvroSchemeTest {
     
     @Test
     public void listOrMapInsideMapTest() throws Exception {
-        final Schema.Parser parser = new Schema.Parser();
-        final Schema schema = parser.parse(getClass().getResourceAsStream("test3.avsc"));
+        final Schema schema = Schema.parse(getClass().getResourceAsStream("test3.avsc"));
         final AvroScheme scheme = new AvroScheme(schema);
 
         final Fields fields = new Fields("aMapToListOfInt", "aMapToMapToLong");
@@ -188,8 +185,7 @@ public class AvroSchemeTest {
 
     @Test
     public void testSerialization() throws Exception {
-        final Schema.Parser parser = new Schema.Parser();
-        final Schema schema = parser.parse(getClass().getResourceAsStream("test1.avsc"));
+        final Schema schema = Schema.parse(getClass().getResourceAsStream("test1.avsc"));
         final AvroScheme expected = new AvroScheme(schema);
 
         final ByteArrayOutputStream bytes = new ByteArrayOutputStream();
