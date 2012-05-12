@@ -21,6 +21,7 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.avro.Schema;
@@ -113,6 +114,10 @@ public abstract class AvroSchemeBase extends Scheme {
 			return Object.class;
 		case STRING:
 			return String.class;
+		case MAP:
+			return Map.class;
+		case ARRAY:
+			return List.class;
 		}
 		throw new IllegalArgumentException("Can't resolve " + typeInfo.type
 				+ " to java class");
