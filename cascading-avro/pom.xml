@@ -17,8 +17,8 @@
   -->
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.maxpoint.hadoop</groupId>
-  <artifactId>cascading-avro</artifactId>
+  <groupId>cascading.avro</groupId>
+  <artifactId>cascading.avro-scheme_1.2</artifactId>
   <version>1.1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
 
