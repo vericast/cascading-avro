@@ -1,0 +1,9 @@
+{
+    "type": "record",
+    "name": "test3",
+    "namespace": "com.maxpoint.cascading.avro",
+    "fields": [
+        {"name":"aMapToListOfInt", "type":{"type":"map", "values":{"type":"array", "items":"int"}}},
+        {"name":"aMapToMapToLong", "type":{"type":"map", "values":{"type":"map", "values":"long"}}}
+    ]
+}

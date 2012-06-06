@@ -11,6 +11,8 @@
         {"name": "aString", "type": ["string", "null"], "default": "foobar" },
         {"name": "aBytes", "type": "bytes" },
         {"name": "aFixed", "type": {"name": "md5", "type": "fixed", "size": 16 }},
-        {"name": "aNull", "type": "null" }
+        {"name": "aNull", "type": "null" },
+        {"name": "aList", "type":{"type":"array", "items":"string"}},
+        {"name": "aMap", "type":{"type":"map", "values":"int"}}
     ]
 }
